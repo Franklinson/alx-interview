@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Boxes containing keys"""
 
+
 def canUnlockAll(boxes):
     if not boxes or not boxes[0]:
         # If there are no boxes or the first box is empty, return False
@@ -8,9 +9,9 @@ def canUnlockAll(boxes):
 
     n = len(boxes)
     visited = [False] * n
-    visited[0] = True 
-    
-    stack = [0] 
+    visited[0] = True
+
+    stack = [0]
 
     while stack:
         current_box = stack.pop()
