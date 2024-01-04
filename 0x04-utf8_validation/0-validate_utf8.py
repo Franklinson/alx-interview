@@ -4,25 +4,27 @@
 
 
 def validUTF8(data):
-    """Variable to track the number of consecutive leading bits set to 1"""
-    num_leading_ones = 0
+    num_bytes = 0
+    mask1 = 1 << 7
+    mask2 = 1 << 6
 
-    # Iterate through each byte in the data
-    for byte in data:
-        # Check if the current byte is a continuation byte (starts with '10')
-        if num_leading_ones > 0:
-            if (byte >> 6) == 0b10:
-                num_leading_ones -= 1
+    for num in data:
+        byte = num & 0xFF
+
+        if num_bytes == 0:
+            if (byte & mask1) == 0:
+                num_bytes = 0
+            elif (byte & mask2) == 0:
+                return False
             else:
-                return False
+                num_leading_ones = 0
+                while (byte & mask1) != 0:
+                    num_leading_ones += 1
+                    byte <<= 1
+                num_bytes = num_leading_ones
         else:
-            # Count the number of consecutive leading bits set to 1
-            while (byte >> (7 - num_leading_ones)) & 1 == 1:
-                num_leading_ones += 1
-
-            # For a single-byte character, num_leading_ones will be 0
-            if num_leading_ones == 1 or num_leading_ones > 4:
+            if (byte & mask1) == 0 or (byte & mask2) != 0:
                 return False
+            num_bytes -= 1
 
-    # Check if the last character is complete
-    return num_leading_ones == 0
+    return num_bytes == 0
