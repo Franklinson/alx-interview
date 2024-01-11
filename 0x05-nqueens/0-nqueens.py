@@ -5,6 +5,7 @@
 
 import sys
 
+
 def is_safe(board, row, col, N):
     # Check if there is a queen in the same column
     for i in range(row):
@@ -23,6 +24,7 @@ def is_safe(board, row, col, N):
 
     return True
 
+
 def solve_nqueens(board, row, N):
     if row == N:
         # Print the solution
@@ -37,6 +39,7 @@ def solve_nqueens(board, row, N):
             solve_nqueens(board, row + 1, N)
             board[row][col] = 0  # Backtrack
 
+
 def nqueens(N):
     if not N.isdigit():
         print("N must be a number")
@@ -50,6 +53,7 @@ def nqueens(N):
 
     board = [[0 for _ in range(N)] for _ in range(N)]
     solve_nqueens(board, 0, N)
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
