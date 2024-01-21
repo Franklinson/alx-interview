@@ -2,36 +2,31 @@
 // a script that prints all characters of a Star Wars movie
 
 const request = require('request');
+const arg = process.argv[2];
 
-const movieId = process.argv[2];
-
-if (!movieId) {
-  console.error('Please provide a movie ID as the first argument.');
-  process.exit(1);
-}
-
-const url = `https://swapi.dev/api/films/${movieId}`;
-
-request(url, (error, response, body) => {
-  if (error) {
-    console.error('Error fetching movie data:', error);
-    return;
-  }
-
-  const movieData = JSON.parse(body);
-
-  const characters = movieData.characters;
-
-  // Print character names in the same order as the API response
-  characters.forEach(characterUrl => {
-    request(characterUrl, (error, response, body) => {
-      if (error) {
-        console.error(`Error fetching character data for ${characterUrl}:`, error);
-        return;
-      }
-
-      const characterData = JSON.parse(body);
-      console.log(characterData.name);
+async function retPro (url) {
+  return new Promise(function (resolve, reject) {
+    request(url, function (err, res, body) {
+      resolve(JSON.parse(body).name);
+      if (err) throw err;
     });
   });
-});
+}
+
+async function chars () {
+  return new Promise(function (resolve, reject) {
+    request(`https://swapi-api.alx-tools.com/api/films/${arg}`, function (err, res, bod) {
+      resolve(JSON.parse(bod).characters);
+      if (err) throw err;
+    });
+  });
+}
+
+async function names () {
+  const thischars = await chars();
+  for (let i = 0; i < thischars.length; i++) {
+    console.log(await retPro(thischars[i]));
+  }
+}
+
+names();
