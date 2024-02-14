@@ -3,6 +3,7 @@
 
 
 def is_prime(num):
+    """the prime function"""
     if num <= 1:
         return False
     if num <= 3:
@@ -18,6 +19,7 @@ def is_prime(num):
 
 
 def isWinner(x, nums):
+    """ the winner function """
     maria_wins = 0
     ben_wins = 0
 
